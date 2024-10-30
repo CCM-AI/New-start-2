@@ -7,14 +7,15 @@ openai.api_key = "sk-proj-vK56MJj_DX7qCAoHInIto7TmQ2qi6eu0rJL9STDfr0lo0XA1mpI6v1
 # Function to get AI response using OpenAI
 def get_ai_response(question):
     try:
+        # Query the OpenAI API using the new method
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-3.5-turbo",  # Make sure this model is available for your key
             messages=[
                 {"role": "user", "content": question}
             ]
         )
         # Extracting the answer
-        answer = response.choices[0].message['content']
+        answer = response['choices'][0]['message']['content']
         return answer, "Source: OpenAI"
     except Exception as e:
         return f"I'm sorry, but I cannot answer that question at the moment. Error: {str(e)}", "N/A"
