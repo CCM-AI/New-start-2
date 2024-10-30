@@ -6,17 +6,66 @@ import numpy as np
 # 1. AI Q&A Section
 def get_ai_response(question):
     """
-    Placeholder function for AI response.
+    Function to simulate AI response based on keywords in the question.
     In a real implementation, this would connect to an AI API (e.g., OpenAI GPT).
     """
-    if "diet" in question.lower():
-        return ("A heart-healthy diet includes fruits, vegetables, whole grains, lean proteins, and healthy fats. It's essential to limit saturated fats and sodium.", "Source: American Heart Association")
-    elif "exercise" in question.lower():
-        return ("Aim for at least 150 minutes of moderate exercise each week, including both aerobic and strength training.", "Source: Centers for Disease Control and Prevention")
-    elif "medication" in question.lower():
-        return ("Always take medications as prescribed by your healthcare provider and consult them if you have any questions.", "Source: National Institutes of Health")
+    question = question.lower()
+    
+    if "diet" in question or "nutrition" in question:
+        answer = (
+            "A heart-healthy diet includes fruits, vegetables, whole grains, "
+            "lean proteins, and healthy fats. It's essential to limit saturated fats, "
+            "trans fats, and sodium."
+        )
+        references = "Source: American Heart Association"
+    
+    elif "exercise" in question or "physical activity" in question:
+        answer = (
+            "Aim for at least 150 minutes of moderate exercise each week, "
+            "including both aerobic and strength training activities."
+        )
+        references = "Source: Centers for Disease Control and Prevention"
+    
+    elif "medication" in question or "treatment" in question:
+        answer = (
+            "Always take medications as prescribed by your healthcare provider. "
+            "If you have any questions about your treatment plan, consult your provider."
+        )
+        references = "Source: National Institutes of Health"
+    
+    elif "hypertension" in question or "blood pressure" in question:
+        answer = (
+            "To manage hypertension, maintain a low-sodium diet, engage in regular exercise, "
+            "and monitor your blood pressure regularly."
+        )
+        references = "Source: American Heart Association"
+    
+    elif "diabetes" in question:
+        answer = (
+            "For diabetes management, monitor your blood sugar levels, maintain a balanced diet, "
+            "and adhere to your prescribed medication regimen."
+        )
+        references = "Source: American Diabetes Association"
+    
+    elif "copd" in question or "asthma" in question:
+        answer = (
+            "For COPD and asthma management, avoid triggers, follow your prescribed inhaler regimen, "
+            "and participate in pulmonary rehabilitation if recommended."
+        )
+        references = "Source: American Lung Association"
+    
+    elif "chronic disease" in question:
+        answer = (
+            "Managing chronic diseases involves a combination of regular check-ups, medication adherence, "
+            "lifestyle modifications, and patient education."
+        )
+        references = "Source: Centers for Disease Control and Prevention"
+    
     else:
-        return ("I'm sorry, but I cannot answer that question at the moment.", "N/A")
+        answer = "I'm sorry, but I cannot answer that question at the moment."
+        references = "N/A"
+
+    return answer, references
 
 # 2. Patient Input Data Section
 st.header("1. Patient Input Data")
@@ -143,44 +192,37 @@ elif risk_level == "Moderate Risk":
     1. **Diet Monitoring**:
         - Use a food diary to observe dietary habits.
         - Choose whole grains and limit sugar intake.
-    2. **Exercise Routine**:
-        - Set achievable fitness goals (e.g., walking 10,000 steps).
-        - Explore new activities like yoga or cycling.
-    3. **Routine Health Checks**:
-        - Check blood pressure once a week.
-        - Schedule bi-annual appointments with your healthcare provider.
-    4. **Track Health Metrics**:
-        - Use a mobile app to monitor blood pressure and cholesterol.
-        - Maintain a symptom log.
+    2. **Exercise Commitment**:
+        - Set weekly exercise goals and track progress.
+        - Explore activities that you enjoy to stay motivated.
+    3. **Check-In**:
+        - Schedule bi-monthly follow-ups with healthcare providers.
+        - Join community programs for additional support.
     """)
 else:
     st.write("""
     **Low-Risk Self-Management Step-by-Step Guide**:
-    1. **Diet Maintenance**:
-        - Continue with a balanced diet and hydrate well.
-        - Experiment with new recipes and healthy snacks.
+    1. **Healthy Eating**:
+        - Maintain a balanced diet and stay hydrated.
+        - Experiment with new healthy recipes.
     2. **Physical Activity**:
-        - Set a goal for daily physical activity, making it fun.
-        - Include friends or family to stay motivated.
-    3. **Annual Health Check-Ups**:
-        - Schedule regular check-ups as recommended.
-        - Discuss any new symptoms with your healthcare provider.
-    4. **Preventive Care**:
-        - Keep a checklist for preventive screenings.
-        - Stay informed about your health status and changes.
+        - Engage in activities you enjoy (walking, cycling, swimming).
+        - Aim for regular, moderate activity.
+    3. **Routine Check-Ups**:
+        - Visit your healthcare provider annually for a check-up.
     """)
 
 # 6. Monitoring & Follow-Up Section
 st.header("5. Monitoring & Follow-Up")
-st.write("Ongoing tracking and follow-up to ensure optimal care.")
+st.write("Guidelines for monitoring your health based on your risk level.")
 
 if risk_level == "High Risk":
     st.write("""
     **High-Risk Monitoring**:
-    - **Blood Pressure**: Daily checks, aiming for less than 130/80 mm Hg.
-    - **Cholesterol**: Check every 3 months.
-    - **Weight**: Daily weighing to monitor fluctuations.
-    - **Follow-Up**: Schedule monthly appointments with a healthcare provider.
+    - **Blood Pressure**: Weekly checks.
+    - **Cholesterol**: Check every 6 months.
+    - **Weight**: Weekly weighing.
+    - **Follow-Up**: Schedule every 3 months with a healthcare provider.
     """)
 elif risk_level == "Moderate Risk":
     st.write("""
