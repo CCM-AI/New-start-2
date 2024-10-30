@@ -4,7 +4,6 @@ import openai  # Ensure you have the OpenAI package installed: pip install opena
 
 # Initialize OpenAI API Key
 openai.api_key = "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"
-
 # Function to get AI response using OpenAI
 def get_ai_response(question):
     try:
