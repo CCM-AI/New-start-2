@@ -8,15 +8,13 @@ openai.api_key = "sk-proj-vK56MJj_DX7qCAoHInIto7TmQ2qi6eu0rJL9STDfr0lo0XA1mpI6v1
 # Function to get AI response using OpenAI with updated API
 def get_ai_response(question):
     try:
-        # Query the OpenAI API
+        # Use the completion endpoint with the latest format
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Updated model name, you can use "gpt-4" if available
-            messages=[
-                {"role": "user", "content": question}
-            ]
+            model="gpt-3.5-turbo",  # Update model to "gpt-3.5-turbo" or "gpt-4" if available
+            messages=[{"role": "user", "content": question}]
         )
         # Extracting the answer
-        answer = response.choices[0].message['content']
+        answer = response['choices'][0]['message']['content']
         return answer, "Source: OpenAI"
     except Exception as e:
         return f"An error occurred: {e}", "N/A"
