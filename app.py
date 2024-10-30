@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Initialize OpenAI API Key
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Function to get AI response using OpenAI
 def get_ai_response(question):
