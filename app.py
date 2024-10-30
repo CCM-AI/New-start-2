@@ -1,130 +1,90 @@
-import streamlit as st
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
-from sklearn.preprocessing import StandardScaler
-from datetime import datetime
+# Self-Management Support Section
+st.header("4. Self-Management Support")
+st.write("Personalized resources and recommendations to help patients self-manage their chronic conditions.")
 
-# Streamlit Title and Description
-st.title("Chronic Care Management System")
-st.subheader("Using AI and Evidence-Based Guidelines for Sustainable Chronic Condition Management")
-
-# Introduction
-st.write("""
-This platform supports patients and healthcare providers by leveraging evidence-based chronic care practices.
-Through AI-driven insights, personalized care plans, and self-management support, we aim to reduce the impact 
-of chronic conditions while enhancing outcomes sustainably.
-""")
-
-# 1️⃣ Patient Input Data
-st.header("1. Patient Input Data")
-st.write("Provide patient details to assess risk and personalize care plans.")
-
-# Collect patient information
-with st.form(key="patient_form"):
-    patient_data = {
-        "age": st.number_input("Age", min_value=0, max_value=120, value=45),
-        "weight": st.number_input("Weight (kg)", min_value=0.0, max_value=300.0, value=70.0),
-        "height": st.number_input("Height (cm)", min_value=0, max_value=250, value=170),
-        "blood_pressure": st.slider("Blood Pressure (mm Hg)", 80, 200, 120),
-        "cholesterol": st.slider("Cholesterol Level (mg/dL)", 100, 300, 180),
-        "diabetes": st.selectbox("Diabetes Status", ["No", "Yes"]),
-        "smoking": st.selectbox("Smoking Status", ["Non-smoker", "Former smoker", "Current smoker"]),
-        "physical_activity": st.selectbox("Physical Activity Level", ["Sedentary", "Moderate", "Active"])
-    }
-    submit_button = st.form_submit_button(label="Submit Patient Data")
-
-# Calculate BMI
-if submit_button:
-    patient_data["bmi"] = patient_data["weight"] / ((patient_data["height"] / 100) ** 2)
-    st.write(f"Calculated BMI: {patient_data['bmi']:.2f}")
-
-# 2️⃣ AI-Driven Risk Stratification
-st.header("2. AI-Driven Risk Stratification")
-st.write("Assess the patient's risk for chronic conditions based on input data using AI insights.")
-
-# Sample dataset and model training (Replace this with a real model trained on evidence-based data)
-X_sample = pd.DataFrame(np.random.rand(100, 6), columns=['age', 'bmi', 'blood_pressure', 'cholesterol', 'diabetes', 'smoking'])
-y_sample = np.random.randint(0, 2, 100)  # Binary outcome: 1 = High risk, 0 = Low risk
-
-# Model training (using RandomForest for demonstration)
-X_train, X_test, y_train, y_test = train_test_split(X_sample, y_sample, test_size=0.2)
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
-
-# Predict risk level using patient data
-input_data = scaler.transform([[patient_data['age'], patient_data['bmi'], patient_data['blood_pressure'],
-                                patient_data['cholesterol'], 1 if patient_data['diabetes'] == "Yes" else 0,
-                                1 if patient_data['smoking'] == "Current smoker" else 0]])
-
-risk_prediction = model.predict(input_data)[0]
-risk_level = "High Risk" if risk_prediction == 1 else "Low Risk"
-
-st.write(f"**Risk Level Prediction:** {risk_level}")
-
-# 3️⃣ Personalized Care Plans
-st.header("3. Personalized Care Plans")
-st.write("Generate a care plan based on patient risk level, adhering to evidence-based guidelines.")
-
+# AI-driven recommendations based on risk level and care plan
 if risk_level == "High Risk":
     st.write("""
-    **Care Plan for High Risk**:
-    - **Lifestyle Modifications**: Encourage dietary changes, increased physical activity, and smoking cessation.
-    - **Regular Monitoring**: Schedule regular follow-ups to monitor blood pressure, cholesterol, and glucose.
-    - **Medication Management**: Ensure adherence to prescribed medications, and adjust as necessary.
+    **High-Risk Self-Management Recommendations**:
+    - **Diet**: Follow a heart-healthy diet rich in vegetables, whole grains, and lean proteins to manage blood pressure and cholesterol.
+    - **Physical Activity**: Aim for at least 150 minutes of moderate-intensity exercise per week, with doctor consultation.
+    - **Medication Adherence**: Consistently take medications as prescribed, and consult your doctor if any issues arise.
+    - **Mental Health Support**: Consider regular check-ins with a mental health professional for stress management.
     """)
 else:
     st.write("""
-    **Care Plan for Low Risk**:
-    - **Preventive Measures**: Maintain current lifestyle with preventive care practices.
-    - **Annual Check-ups**: Schedule yearly assessments for cholesterol, blood pressure, and other metrics.
-    - **Self-Monitoring**: Encourage self-monitoring for any new symptoms or lifestyle changes.
+    **Low-Risk Self-Management Recommendations**:
+    - **Diet**: Maintain a balanced diet with portion control to prevent any rise in blood pressure or cholesterol.
+    - **Physical Activity**: Aim for moderate physical activity, such as daily walks or light workouts.
+    - **Routine Monitoring**: Check blood pressure and cholesterol periodically to ensure they remain in a healthy range.
+    - **Preventive Care**: Stay on top of preventive screenings as recommended.
     """)
 
-# 4️⃣ Self-Management Support
-st.header("4. Self-Management Support")
-st.write("Resources and support for managing chronic conditions.")
+# Interactive resource checkboxes for further guidance
+if st.checkbox("Would you like more dietary guidance?"):
+    st.write("A heart-healthy, Mediterranean diet is often recommended for chronic condition management. Visit [MedDiet](https://www.mediterraneandiet.com) for recipes and guidance.")
 
-# Self-management resources
-if st.checkbox("Receive Dietary Guidance"):
-    st.write("**Resource**: A balanced diet can help reduce cholesterol and manage weight effectively.")
-if st.checkbox("Physical Activity Support"):
-    st.write("**Resource**: Regular physical activity improves cardiovascular health and reduces risks.")
-if st.checkbox("Medication Adherence Assistance"):
-    st.write("**Resource**: Consistent medication adherence is crucial for long-term management.")
+if st.checkbox("Would you like personalized physical activity support?"):
+    st.write("A tailored exercise plan based on your condition can help. Check with your healthcare provider or use an app like MyFitnessPal for tracking activities.")
 
-# 5️⃣ Monitoring & Follow-Up
+if st.checkbox("Need help with medication adherence?"):
+    st.write("Use tools like mobile reminders or apps (e.g., Medisafe) to improve consistency in taking medications.")
+
+# Monitoring & Follow-Up Section
 st.header("5. Monitoring & Follow-Up")
-st.write("Track patient progress over time and schedule follow-up appointments based on the care plan.")
+st.write("Track patient progress with AI insights on critical metrics and reminders for follow-up care.")
 
-follow_up_date = st.date_input("Next Follow-Up Appointment", min_value=datetime.today())
-st.write(f"Follow-up scheduled for: {follow_up_date}")
+# AI-Driven Tracking Recommendations based on Risk Level
+if risk_level == "High Risk":
+    st.write("""
+    **High-Risk Monitoring Plan**:
+    - **Blood Pressure Monitoring**: Track daily, especially in the morning, and keep a record for healthcare visits.
+    - **Cholesterol Monitoring**: Check every 3-6 months, or as directed by your healthcare provider.
+    - **Diabetes Monitoring**: If diabetic, measure blood glucose levels daily; consider a continuous glucose monitor if advised.
+    - **Follow-Up Frequency**: Schedule follow-ups every 3 months to review and adjust the care plan as needed.
+    """)
+else:
+    st.write("""
+    **Low-Risk Monitoring Plan**:
+    - **Blood Pressure Monitoring**: Check weekly to ensure levels remain stable.
+    - **Cholesterol Monitoring**: Schedule an annual check-up with your healthcare provider.
+    - **General Health Check**: Track any changes in symptoms and lifestyle to discuss in your next visit.
+    - **Follow-Up Frequency**: Schedule follow-ups once a year unless symptoms or conditions change.
+    """)
 
-# 6️⃣ Outcome Evaluation
+# Reminder for Follow-Up Appointments
+st.date_input("Next Follow-Up Appointment", min_value=datetime.today())
+
+# Outcome Evaluation Section
 st.header("6. Outcome Evaluation")
-st.write("Review outcomes to assess care plan effectiveness and patient progress.")
+st.write("Evaluate patient outcomes to assess the effectiveness of the care plan.")
 
-# Model performance report
-y_pred = model.predict(X_test)
-st.text("Model Performance Report:")
+# AI Insights Based on Outcome Evaluation
+if risk_level == "High Risk":
+    st.write("""
+    **Outcome Evaluation for High-Risk Patients**:
+    - **Expected Outcomes**: Improvement in blood pressure, cholesterol, and overall condition stability.
+    - **Adjustment Recommendations**: If no significant improvement is observed, consider modifying the medication dosage, adjusting lifestyle factors, or exploring additional treatment options.
+    - **Risk Reduction Insights**: For patients maintaining or improving metrics, we can predict a decrease in long-term complications, enhancing quality of life.
+    """)
+else:
+    st.write("""
+    **Outcome Evaluation for Low-Risk Patients**:
+    - **Expected Outcomes**: Maintain healthy levels in blood pressure, cholesterol, and other key metrics.
+    - **Adjustment Recommendations**: Minor tweaks in diet or activity may be recommended based on yearly outcomes.
+    - **Preventive Guidance**: For patients showing stable results, AI suggests ongoing preventive strategies to maintain low-risk status and prevent future escalation.
+    """)
+
+# Display a summary based on model prediction and outcome data
+st.write("Model Performance for Evaluation:")
 st.text(classification_report(y_test, y_pred))
 
-# 7️⃣ Quality Improvement
-st.header("7. Quality Improvement")
-st.write("Use outcome data to enhance chronic care quality over time.")
-
+st.write("### Quality Improvement Insights")
 st.write("""
-*Opportunities for Quality Improvement*:
-- **Data Analysis**: Regularly analyze patient data to identify trends and areas for improvement.
-- **Feedback Mechanism**: Allow patients and providers to give feedback to continuously improve care plans.
-- **Updates to Evidence-Based Guidelines**: Integrate new research and guidelines to improve patient outcomes.
+Our AI uses outcome data from high-risk patients to guide quality improvement:
+- **For non-improving patients**: Identifies trends in care plans that need adjustment.
+- **For improving patients**: Highlights effective interventions that can benefit others with similar profiles.
+This feedback loop helps refine chronic care practices and improves patient outcomes over time.
 """)
 
-# Footer
-st.write("Thank you for using our AI-driven, evidence-based chronic care management system!")
+st.write("Thank you for using our AI-powered chronic care management system for better health outcomes!")
