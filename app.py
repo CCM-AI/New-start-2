@@ -1,7 +1,6 @@
 # Import required libraries
 import streamlit as st
 from datetime import datetime
-from sklearn.metrics import classification_report
 import numpy as np
 
 # 1. Patient Input Data Section
@@ -187,24 +186,14 @@ else:
 
 # 6. Outcome Evaluation Section
 st.header("6. Outcome Evaluation")
-st.write("Evaluating outcomes based on your progress and AI insights.")
+st.write("Evaluating the expected outcomes of your personalized care plan.")
 
-# Placeholder model data - replace with actual model outcome if available
-y_test = np.array([0, 1, 1, 0])  # Example true labels
-y_pred = np.array([0, 1, 0, 0])  # Example predicted labels
-
-try:
-    st.write("Model Evaluation Report:")
-    st.text(classification_report(y_test, y_pred))
-except Exception as e:
-    st.error(f"Model evaluation error: {e}")
-
-st.write(f"**Outcome Evaluation Based on {risk_level} Status**:")
+st.write(f"**Expected Outcomes Based on {risk_level} Status**:")
 if risk_level == "High Risk":
     st.write("""
     - **Expected Outcomes**: 
-        - Reduced blood pressure and cholesterol within 3 months.
-        - Improved medication adherence.
+        - Reduced blood pressure and cholesterol levels within 3 months.
+        - Improved adherence to medications.
         - Better management of diabetes within 6 months.
     - **Adjustments**: Regularly adjust care plan based on progress.
     """)
@@ -240,20 +229,23 @@ st.write("Ask a question related to your health, and our AI will provide evidenc
 user_question = st.text_input("Type your question here:")
 if st.button("Ask"):
     # Placeholder for AI response; replace with actual AI implementation
-    if "diet" in user_question.lower():
-        answer = "A heart-healthy diet includes fruits, vegetables, whole grains, lean proteins, and healthy fats. It's essential to limit saturated fats and sodium."
-        references = "Source: American Heart Association"
-    elif "exercise" in user_question.lower():
-        answer = "Aim for at least 150 minutes of moderate exercise each week, including both aerobic and strength training."
-        references = "Source: Centers for Disease Control and Prevention"
-    elif "medication" in user_question.lower():
-        answer = "Always take medications as prescribed by your healthcare provider and consult them if you have any questions."
-        references = "Source: National Institutes of Health"
-    else:
-        answer = "I'm sorry, but I cannot answer that question at the moment."
-        references = "N/A"
-
+    answer, references = get_ai_response(user_question)
+    
     st.write(f"**Answer**: {answer}")
     st.write(f"**References**: {references}")
+
+def get_ai_response(question):
+    """
+    Placeholder function for AI response.
+    In a real implementation, this would connect to an AI API (e.g., OpenAI GPT).
+    """
+    if "diet" in question.lower():
+        return ("A heart-healthy diet includes fruits, vegetables, whole grains, lean proteins, and healthy fats. It's essential to limit saturated fats and sodium.", "Source: American Heart Association")
+    elif "exercise" in question.lower():
+        return ("Aim for at least 150 minutes of moderate exercise each week, including both aerobic and strength training.", "Source: Centers for Disease Control and Prevention")
+    elif "medication" in question.lower():
+        return ("Always take medications as prescribed by your healthcare provider and consult them if you have any questions.", "Source: National Institutes of Health")
+    else:
+        return ("I'm sorry, but I cannot answer that question at the moment.", "N/A")
 
 st.write("Thank you for using our AI-driven chronic care management system to support better health outcomes!")
