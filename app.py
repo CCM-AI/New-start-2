@@ -1,4 +1,4 @@
-# app.py
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -13,4 +13,5 @@ def home():
     return "Welcome to the Chronic Care Management System!"
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get("PORT", 5000))  # Use port from environment or default to 5000
+    app.run(host='0.0.0.0', port=port)
