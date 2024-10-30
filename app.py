@@ -4,105 +4,163 @@ from datetime import datetime
 from sklearn.metrics import classification_report
 import numpy as np
 
-# Placeholder risk level variable for demonstration
-# Replace with your AI risk stratification logic
-risk_level = "High Risk"  # or dynamically set based on patient input
+# 1. Patient Input Data Section
+st.header("1. Patient Input Data")
+st.write("Please fill in your details to help us assess your chronic care needs.")
 
-# Self-Management Support Section
+age = st.number_input("Age", min_value=0, max_value=120, step=1)
+gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+blood_pressure = st.number_input("Blood Pressure (mm Hg)", min_value=0)
+cholesterol_level = st.number_input("Cholesterol Level (mg/dL)", min_value=0)
+diabetes = st.selectbox("Diabetes", ["Yes", "No"])
+smoking_status = st.selectbox("Smoking Status", ["Never", "Former", "Current"])
+physical_activity = st.selectbox("Physical Activity Level", ["Low", "Moderate", "High"])
+
+# Collect data in a dictionary for AI processing
+patient_data = {
+    "age": age,
+    "gender": gender,
+    "blood_pressure": blood_pressure,
+    "cholesterol_level": cholesterol_level,
+    "diabetes": diabetes,
+    "smoking_status": smoking_status,
+    "physical_activity": physical_activity
+}
+
+# 2. AI-Driven Risk Stratification Section
+st.header("2. AI-Driven Risk Stratification")
+st.write("Our AI will assess your risk level based on your input data.")
+
+# Simplified risk model based on input data
+if blood_pressure > 140 or cholesterol_level > 240 or diabetes == "Yes":
+    risk_level = "High Risk"
+elif age > 50 or smoking_status == "Current" or physical_activity == "Low":
+    risk_level = "Moderate Risk"
+else:
+    risk_level = "Low Risk"
+
+st.write(f"**Your Risk Level**: {risk_level}")
+
+# 3. Personalized Care Plans Section
+st.header("3. Personalized Care Plans")
+st.write("Your customized care plan based on the AI-driven risk assessment.")
+
+if risk_level == "High Risk":
+    st.write("""
+    **High-Risk Care Plan**:
+    - **Diet**: Focus on heart-healthy foods and limit salt intake.
+    - **Exercise**: Aim for moderate exercise, like brisk walking, for 150 minutes per week.
+    - **Regular Monitoring**: Check blood pressure and cholesterol frequently.
+    - **Medication Adherence**: Follow up with your healthcare provider for medication adherence.
+    """)
+elif risk_level == "Moderate Risk":
+    st.write("""
+    **Moderate-Risk Care Plan**:
+    - **Diet**: Adopt a balanced diet with a variety of foods.
+    - **Exercise**: Stay active, targeting 150 minutes per week of physical activity.
+    - **Monitoring**: Regularly check your blood pressure and cholesterol.
+    - **Preventive Measures**: Stay up-to-date with screenings and check-ups.
+    """)
+else:
+    st.write("""
+    **Low-Risk Care Plan**:
+    - **Diet**: Continue with a balanced diet to maintain current health.
+    - **Exercise**: Keep up with moderate physical activity.
+    - **Annual Monitoring**: Routine annual check-up to monitor key metrics.
+    """)
+
+# 4. Self-Management Support Section
 st.header("4. Self-Management Support")
-st.write("Personalized resources and recommendations to help patients self-manage their chronic conditions.")
+st.write("Resources and recommendations to help you manage your chronic condition.")
 
-# AI-driven recommendations based on risk level and care plan
 if risk_level == "High Risk":
     st.write("""
-    **High-Risk Self-Management Recommendations**:
-    - **Diet**: Follow a heart-healthy diet rich in vegetables, whole grains, and lean proteins to manage blood pressure and cholesterol.
-    - **Physical Activity**: Aim for at least 150 minutes of moderate-intensity exercise per week, with doctor consultation.
-    - **Medication Adherence**: Consistently take medications as prescribed, and consult your doctor if any issues arise.
-    - **Mental Health Support**: Consider regular check-ins with a mental health professional for stress management.
+    **High-Risk Self-Management Tips**:
+    - **Diet**: Follow a Mediterranean or DASH diet.
+    - **Exercise**: Include both cardio and strength exercises with your doctor's guidance.
+    - **Medication Management**: Use reminders or apps to adhere to medication.
+    - **Mental Health**: Consider regular check-ins with a counselor.
+    """)
+elif risk_level == "Moderate Risk":
+    st.write("""
+    **Moderate-Risk Self-Management Tips**:
+    - **Diet**: Maintain a diet rich in fruits, vegetables, and lean proteins.
+    - **Physical Activity**: Aim for 150 minutes of weekly exercise.
+    - **Routine Monitoring**: Track blood pressure and cholesterol as advised.
     """)
 else:
     st.write("""
-    **Low-Risk Self-Management Recommendations**:
-    - **Diet**: Maintain a balanced diet with portion control to prevent any rise in blood pressure or cholesterol.
-    - **Physical Activity**: Aim for moderate physical activity, such as daily walks or light workouts.
-    - **Routine Monitoring**: Check blood pressure and cholesterol periodically to ensure they remain in a healthy range.
-    - **Preventive Care**: Stay on top of preventive screenings as recommended.
+    **Low-Risk Self-Management Tips**:
+    - **Diet**: Continue with a balanced, portion-controlled diet.
+    - **Exercise**: Engage in regular activities like walking, biking, or swimming.
+    - **Preventive Screenings**: Maintain routine health screenings.
     """)
 
-# Interactive resource checkboxes for further guidance
-if st.checkbox("Would you like more dietary guidance?"):
-    st.write("A heart-healthy, Mediterranean diet is often recommended for chronic condition management. Visit [MedDiet](https://www.mediterraneandiet.com) for recipes and guidance.")
-
-if st.checkbox("Would you like personalized physical activity support?"):
-    st.write("A tailored exercise plan based on your condition can help. Check with your healthcare provider or use an app like MyFitnessPal for tracking activities.")
-
-if st.checkbox("Need help with medication adherence?"):
-    st.write("Use tools like mobile reminders or apps (e.g., Medisafe) to improve consistency in taking medications.")
-
-# Monitoring & Follow-Up Section
+# 5. Monitoring & Follow-Up Section
 st.header("5. Monitoring & Follow-Up")
-st.write("Track patient progress with AI insights on critical metrics and reminders for follow-up care.")
+st.write("Ongoing tracking and follow-up to ensure optimal care.")
 
-# AI-Driven Tracking Recommendations based on Risk Level
 if risk_level == "High Risk":
     st.write("""
-    **High-Risk Monitoring Plan**:
-    - **Blood Pressure Monitoring**: Track daily, especially in the morning, and keep a record for healthcare visits.
-    - **Cholesterol Monitoring**: Check every 3-6 months, or as directed by your healthcare provider.
-    - **Diabetes Monitoring**: If diabetic, measure blood glucose levels daily; consider a continuous glucose monitor if advised.
-    - **Follow-Up Frequency**: Schedule follow-ups every 3 months to review and adjust the care plan as needed.
+    **High-Risk Monitoring**:
+    - **Blood Pressure**: Check daily or as advised by your healthcare provider.
+    - **Cholesterol and Diabetes**: Test every 3-6 months.
+    - **Follow-Up**: Schedule check-ups every 3 months.
+    """)
+elif risk_level == "Moderate Risk":
+    st.write("""
+    **Moderate-Risk Monitoring**:
+    - **Blood Pressure**: Check weekly.
+    - **Cholesterol**: Monitor every 6-12 months.
+    - **Follow-Up**: Schedule annual or bi-annual check-ups.
     """)
 else:
     st.write("""
-    **Low-Risk Monitoring Plan**:
-    - **Blood Pressure Monitoring**: Check weekly to ensure levels remain stable.
-    - **Cholesterol Monitoring**: Schedule an annual check-up with your healthcare provider.
-    - **General Health Check**: Track any changes in symptoms and lifestyle to discuss in your next visit.
-    - **Follow-Up Frequency**: Schedule follow-ups once a year unless symptoms or conditions change.
+    **Low-Risk Monitoring**:
+    - **Blood Pressure**: Monitor as advised, typically yearly.
+    - **Cholesterol**: Check yearly.
+    - **Follow-Up**: Routine annual check-ups.
     """)
 
-# Reminder for Follow-Up Appointments
-st.date_input("Next Follow-Up Appointment", min_value=datetime.today())
-
-# Outcome Evaluation Section
+# 6. Outcome Evaluation Section
 st.header("6. Outcome Evaluation")
-st.write("Evaluate patient outcomes to assess the effectiveness of the care plan.")
+st.write("Evaluating outcomes based on your progress and AI insights.")
 
-# Placeholder for test and prediction data - replace with actual model evaluation
-# These placeholders prevent NameError by ensuring variables are defined
+# Placeholder model data - replace with actual model outcome if available
 y_test = np.array([0, 1, 1, 0])  # Example true labels
 y_pred = np.array([0, 1, 0, 0])  # Example predicted labels
 
-# AI Insights Based on Outcome Evaluation
+try:
+    st.write("Model Evaluation Report:")
+    st.text(classification_report(y_test, y_pred))
+except Exception as e:
+    st.error(f"Model evaluation error: {e}")
+
+st.write(f"**Outcome Evaluation Based on {risk_level} Status**:")
 if risk_level == "High Risk":
     st.write("""
-    **Outcome Evaluation for High-Risk Patients**:
-    - **Expected Outcomes**: Improvement in blood pressure, cholesterol, and overall condition stability.
-    - **Adjustment Recommendations**: If no significant improvement is observed, consider modifying the medication dosage, adjusting lifestyle factors, or exploring additional treatment options.
-    - **Risk Reduction Insights**: For patients maintaining or improving metrics, we can predict a decrease in long-term complications, enhancing quality of life.
+    - **Expected Outcomes**: Reduced blood pressure and cholesterol, improved medication adherence.
+    - **Adjustments**: Modify medication or increase activity levels if no improvement.
+    """)
+elif risk_level == "Moderate Risk":
+    st.write("""
+    - **Expected Outcomes**: Stability in health metrics.
+    - **Adjustments**: Small adjustments in diet or activity if results aren’t optimal.
     """)
 else:
     st.write("""
-    **Outcome Evaluation for Low-Risk Patients**:
-    - **Expected Outcomes**: Maintain healthy levels in blood pressure, cholesterol, and other key metrics.
-    - **Adjustment Recommendations**: Minor tweaks in diet or activity may be recommended based on yearly outcomes.
-    - **Preventive Guidance**: For patients showing stable results, AI suggests ongoing preventive strategies to maintain low-risk status and prevent future escalation.
+    - **Expected Outcomes**: Maintenance of health metrics in a safe range.
+    - **Adjustments**: Continue current routine unless metrics change.
     """)
 
-# Display a summary based on model prediction and outcome data
-try:
-    st.write("Model Performance for Evaluation:")
-    st.text(classification_report(y_test, y_pred))
-except Exception as e:
-    st.error(f"Error in model evaluation: {e}")
+# 7. Quality Improvement Section
+st.header("7. Quality Improvement Insights")
+st.write("Our system uses patient outcomes to refine and improve chronic care management.")
 
-st.write("### Quality Improvement Insights")
 st.write("""
-Our AI uses outcome data from high-risk patients to guide quality improvement:
-- **For non-improving patients**: Identifies trends in care plans that need adjustment.
-- **For improving patients**: Highlights effective interventions that can benefit others with similar profiles.
-This feedback loop helps refine chronic care practices and improves patient outcomes over time.
+For patients classified as high-risk who show no improvement, the AI identifies potential gaps in care strategies.
+For patients showing stable or improved results, effective elements of their care plans are highlighted to improve outcomes for other patients.
+This feedback loop is key to building an adaptive, evidence-based chronic care system that continually improves based on real-world patient data.
 """)
 
-st.write("Thank you for using our AI-powered chronic care management system for better health outcomes!")
+st.write("Thank you for using our AI-driven chronic care management system to support better health outcomes!")
