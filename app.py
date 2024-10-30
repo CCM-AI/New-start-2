@@ -2,14 +2,14 @@ import streamlit as st
 import openai
 
 # Initialize OpenAI API Key
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Function to get AI response using OpenAI
 def get_ai_response(question):
     try:
         # Query the OpenAI API using the new method
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Make sure this model is available for your key
+            model="gpt-3.5-turbo",  # Ensure this model is available for your key
             messages=[
                 {"role": "user", "content": question}
             ]
@@ -18,6 +18,7 @@ def get_ai_response(question):
         answer = response['choices'][0]['message']['content']
         return answer, "Source: OpenAI"
     except Exception as e:
+        print(f"Error occurred: {str(e)}")  # Log error to console for debugging
         return f"I'm sorry, but I cannot answer that question at the moment. Error: {str(e)}", "N/A"
 
 # Streamlit UI
