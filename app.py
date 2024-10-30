@@ -1,3 +1,13 @@
+# Import required libraries
+import streamlit as st
+from datetime import datetime
+from sklearn.metrics import classification_report
+import numpy as np
+
+# Placeholder risk level variable for demonstration
+# Replace with your AI risk stratification logic
+risk_level = "High Risk"  # or dynamically set based on patient input
+
 # Self-Management Support Section
 st.header("4. Self-Management Support")
 st.write("Personalized resources and recommendations to help patients self-manage their chronic conditions.")
@@ -59,6 +69,11 @@ st.date_input("Next Follow-Up Appointment", min_value=datetime.today())
 st.header("6. Outcome Evaluation")
 st.write("Evaluate patient outcomes to assess the effectiveness of the care plan.")
 
+# Placeholder for test and prediction data - replace with actual model evaluation
+# These placeholders prevent NameError by ensuring variables are defined
+y_test = np.array([0, 1, 1, 0])  # Example true labels
+y_pred = np.array([0, 1, 0, 0])  # Example predicted labels
+
 # AI Insights Based on Outcome Evaluation
 if risk_level == "High Risk":
     st.write("""
@@ -76,8 +91,11 @@ else:
     """)
 
 # Display a summary based on model prediction and outcome data
-st.write("Model Performance for Evaluation:")
-st.text(classification_report(y_test, y_pred))
+try:
+    st.write("Model Performance for Evaluation:")
+    st.text(classification_report(y_test, y_pred))
+except Exception as e:
+    st.error(f"Error in model evaluation: {e}")
 
 st.write("### Quality Improvement Insights")
 st.write("""
