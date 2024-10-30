@@ -1,7 +1,5 @@
-# Import required libraries
 import streamlit as st
 from datetime import datetime
-import numpy as np
 
 # 1. AI Q&A Section
 def get_ai_response(question):
@@ -189,15 +187,18 @@ if risk_level == "High Risk":
 elif risk_level == "Moderate Risk":
     st.write("""
     **Moderate-Risk Self-Management Step-by-Step Guide**:
-    1. **Diet Monitoring**:
-        - Use a food diary to observe dietary habits.
-        - Choose whole grains and limit sugar intake.
-    2. **Exercise Commitment**:
-        - Set weekly exercise goals and track progress.
-        - Explore activities that you enjoy to stay motivated.
-    3. **Check-In**:
-        - Schedule bi-monthly follow-ups with healthcare providers.
-        - Join community programs for additional support.
+    1. **Nutrition**:
+        - Explore healthy recipes and meal prep options.
+        - Consider keeping a food journal for awareness.
+    2. **Physical Activity**:
+        - Set achievable weekly exercise goals.
+        - Incorporate walking or cycling into your daily routine.
+    3. **Monitoring Health**:
+        - Schedule regular blood pressure and cholesterol checks.
+        - Stay informed about your conditions through reliable sources.
+    4. **Support Network**:
+        - Join community support programs or online groups.
+        - Maintain open communication with your healthcare team.
     """)
 else:
     st.write("""
