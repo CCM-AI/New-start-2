@@ -3,7 +3,22 @@ import streamlit as st
 from datetime import datetime
 import numpy as np
 
-# 1. Patient Input Data Section
+# 1. AI Q&A Section
+def get_ai_response(question):
+    """
+    Placeholder function for AI response.
+    In a real implementation, this would connect to an AI API (e.g., OpenAI GPT).
+    """
+    if "diet" in question.lower():
+        return ("A heart-healthy diet includes fruits, vegetables, whole grains, lean proteins, and healthy fats. It's essential to limit saturated fats and sodium.", "Source: American Heart Association")
+    elif "exercise" in question.lower():
+        return ("Aim for at least 150 minutes of moderate exercise each week, including both aerobic and strength training.", "Source: Centers for Disease Control and Prevention")
+    elif "medication" in question.lower():
+        return ("Always take medications as prescribed by your healthcare provider and consult them if you have any questions.", "Source: National Institutes of Health")
+    else:
+        return ("I'm sorry, but I cannot answer that question at the moment.", "N/A")
+
+# 2. Patient Input Data Section
 st.header("1. Patient Input Data")
 st.write("Please fill in your details to help us assess your chronic care needs.")
 
@@ -47,7 +62,7 @@ patient_data = {
     "asthma": asthma,
 }
 
-# 2. AI-Driven Risk Stratification Section
+# 3. AI-Driven Risk Stratification Section
 st.header("2. AI-Driven Risk Stratification")
 st.write("Our AI will assess your risk level based on your input data.")
 
@@ -68,7 +83,7 @@ elif age < 50 and smoking_status == "Never" and physical_activity == "High":
 st.write(f"**Your Risk Level**: {risk_level}")
 st.write(f"**Explanation**: {risk_explanation}")
 
-# 3. Personalized Care Plans Section
+# 4. Personalized Care Plans Section
 st.header("3. Personalized Care Plans")
 st.write("Your customized care plan based on the AI-driven risk assessment.")
 
@@ -99,7 +114,7 @@ else:
     - **Preventive Screenings**: Keep up with preventive screenings based on age and gender.
     """)
 
-# 4. Self-Management Support Section
+# 5. Self-Management Support Section
 st.header("4. Self-Management Support")
 st.write("Resources and recommendations to help you manage your chronic condition.")
 
@@ -155,7 +170,7 @@ else:
         - Stay informed about your health status and changes.
     """)
 
-# 5. Monitoring & Follow-Up Section
+# 6. Monitoring & Follow-Up Section
 st.header("5. Monitoring & Follow-Up")
 st.write("Ongoing tracking and follow-up to ensure optimal care.")
 
@@ -165,28 +180,28 @@ if risk_level == "High Risk":
     - **Blood Pressure**: Daily checks, aiming for less than 130/80 mm Hg.
     - **Cholesterol**: Check every 3 months.
     - **Weight**: Daily weighing to monitor fluctuations.
-    - **Follow-Up**: Schedule monthly appointments with your healthcare provider.
+    - **Follow-Up**: Schedule monthly appointments with a healthcare provider.
     """)
 elif risk_level == "Moderate Risk":
     st.write("""
     **Moderate-Risk Monitoring**:
-    - **Blood Pressure**: Weekly checks, aiming for less than 140/90 mm Hg.
+    - **Blood Pressure**: Weekly checks.
     - **Cholesterol**: Check every 6 months.
-    - **Weight**: Weekly monitoring.
-    - **Follow-Up**: Schedule appointments every 6 months.
+    - **Weight**: Weekly weighing.
+    - **Follow-Up**: Schedule every 3-6 months with a healthcare provider.
     """)
 else:
     st.write("""
     **Low-Risk Monitoring**:
-    - **Blood Pressure**: Check monthly, aiming for less than 140/90 mm Hg.
-    - **Cholesterol**: Annual check.
-    - **Weight**: Weekly check to maintain healthy weight.
-    - **Follow-Up**: Routine annual check-ups with your healthcare provider.
+    - **Blood Pressure**: Monthly checks.
+    - **Cholesterol**: Check annually.
+    - **Weight**: Monthly weighing.
+    - **Follow-Up**: Schedule annual check-ups with a healthcare provider.
     """)
 
-# 6. Outcome Evaluation Section
-st.header("6. Outcome Evaluation")
-st.write("Evaluating the expected outcomes of your personalized care plan.")
+# 7. Expected Outcomes Section
+st.header("6. Expected Outcomes")
+st.write("The expected outcomes of your personalized care plan.")
 
 st.write(f"**Expected Outcomes Based on {risk_level} Status**:")
 if risk_level == "High Risk":
@@ -212,7 +227,7 @@ else:
     - **Adjustments**: Continue with current routine; reevaluate annually.
     """)
 
-# 7. Quality Improvement Section
+# 8. Quality Improvement Section
 st.header("7. Quality Improvement Insights")
 st.write("Our system uses patient outcomes to refine and improve chronic care management.")
 
@@ -222,30 +237,15 @@ For patients showing stable or improved results, effective elements of their car
 This feedback loop is key to building an adaptive, evidence-based chronic care system that continually improves based on real-world patient data.
 """)
 
-# 8. AI Q&A Section
+# 9. AI Q&A Section
 st.header("8. AI Question and Answer")
 st.write("Ask a question related to your health, and our AI will provide evidence-based answers.")
 
 user_question = st.text_input("Type your question here:")
 if st.button("Ask"):
-    # Placeholder for AI response; replace with actual AI implementation
     answer, references = get_ai_response(user_question)
     
     st.write(f"**Answer**: {answer}")
     st.write(f"**References**: {references}")
-
-def get_ai_response(question):
-    """
-    Placeholder function for AI response.
-    In a real implementation, this would connect to an AI API (e.g., OpenAI GPT).
-    """
-    if "diet" in question.lower():
-        return ("A heart-healthy diet includes fruits, vegetables, whole grains, lean proteins, and healthy fats. It's essential to limit saturated fats and sodium.", "Source: American Heart Association")
-    elif "exercise" in question.lower():
-        return ("Aim for at least 150 minutes of moderate exercise each week, including both aerobic and strength training.", "Source: Centers for Disease Control and Prevention")
-    elif "medication" in question.lower():
-        return ("Always take medications as prescribed by your healthcare provider and consult them if you have any questions.", "Source: National Institutes of Health")
-    else:
-        return ("I'm sorry, but I cannot answer that question at the moment.", "N/A")
 
 st.write("Thank you for using our AI-driven chronic care management system to support better health outcomes!")
