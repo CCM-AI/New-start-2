@@ -1,71 +1,27 @@
 import streamlit as st
 from datetime import datetime
+import openai  # Ensure you have the OpenAI package installed: pip install openai
 
-# 1. AI Q&A Section
+# Initialize OpenAI API Key
+openai.api_key = 'YOUR_OPENAI_API_KEY'  # Replace with your actual OpenAI API key
+
+# Function to get AI response using OpenAI
 def get_ai_response(question):
-    """
-    Function to simulate AI response based on keywords in the question.
-    In a real implementation, this would connect to an AI API (e.g., OpenAI GPT).
-    """
-    question = question.lower()
-    
-    if "diet" in question or "nutrition" in question:
-        answer = (
-            "A heart-healthy diet includes fruits, vegetables, whole grains, "
-            "lean proteins, and healthy fats. It's essential to limit saturated fats, "
-            "trans fats, and sodium."
+    try:
+        # Query the OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # You can change the model as per your need
+            messages=[
+                {"role": "user", "content": question}
+            ]
         )
-        references = "Source: American Heart Association"
-    
-    elif "exercise" in question or "physical activity" in question:
-        answer = (
-            "Aim for at least 150 minutes of moderate exercise each week, "
-            "including both aerobic and strength training activities."
-        )
-        references = "Source: Centers for Disease Control and Prevention"
-    
-    elif "medication" in question or "treatment" in question:
-        answer = (
-            "Always take medications as prescribed by your healthcare provider. "
-            "If you have any questions about your treatment plan, consult your provider."
-        )
-        references = "Source: National Institutes of Health"
-    
-    elif "hypertension" in question or "blood pressure" in question:
-        answer = (
-            "To manage hypertension, maintain a low-sodium diet, engage in regular exercise, "
-            "and monitor your blood pressure regularly."
-        )
-        references = "Source: American Heart Association"
-    
-    elif "diabetes" in question:
-        answer = (
-            "For diabetes management, monitor your blood sugar levels, maintain a balanced diet, "
-            "and adhere to your prescribed medication regimen."
-        )
-        references = "Source: American Diabetes Association"
-    
-    elif "copd" in question or "asthma" in question:
-        answer = (
-            "For COPD and asthma management, avoid triggers, follow your prescribed inhaler regimen, "
-            "and participate in pulmonary rehabilitation if recommended."
-        )
-        references = "Source: American Lung Association"
-    
-    elif "chronic disease" in question:
-        answer = (
-            "Managing chronic diseases involves a combination of regular check-ups, medication adherence, "
-            "lifestyle modifications, and patient education."
-        )
-        references = "Source: Centers for Disease Control and Prevention"
-    
-    else:
-        answer = "I'm sorry, but I cannot answer that question at the moment."
-        references = "N/A"
+        # Extracting the answer
+        answer = response.choices[0].message['content']
+        return answer, "Source: OpenAI"
+    except Exception as e:
+        return "I'm sorry, but I cannot answer that question at the moment.", "N/A"
 
-    return answer, references
-
-# 2. Patient Input Data Section
+# 1. Patient Input Data Section
 st.header("1. Patient Input Data")
 st.write("Please fill in your details to help us assess your chronic care needs.")
 
@@ -109,7 +65,7 @@ patient_data = {
     "asthma": asthma,
 }
 
-# 3. AI-Driven Risk Stratification Section
+# 2. AI-Driven Risk Stratification Section
 st.header("2. AI-Driven Risk Stratification")
 st.write("Our AI will assess your risk level based on your input data.")
 
@@ -130,7 +86,7 @@ elif age < 50 and smoking_status == "Never" and physical_activity == "High":
 st.write(f"**Your Risk Level**: {risk_level}")
 st.write(f"**Explanation**: {risk_explanation}")
 
-# 4. Personalized Care Plans Section
+# 3. Personalized Care Plans Section
 st.header("3. Personalized Care Plans")
 st.write("Your customized care plan based on the AI-driven risk assessment.")
 
@@ -161,7 +117,7 @@ else:
     - **Preventive Screenings**: Keep up with preventive screenings based on age and gender.
     """)
 
-# 5. Self-Management Support Section
+# 4. Self-Management Support Section
 st.header("4. Self-Management Support")
 st.write("Resources and recommendations to help you manage your chronic condition.")
 
@@ -213,7 +169,7 @@ else:
         - Visit your healthcare provider annually for a check-up.
     """)
 
-# 6. Monitoring & Follow-Up Section
+# 5. Monitoring & Follow-Up Section
 st.header("5. Monitoring & Follow-Up")
 st.write("Guidelines for monitoring your health based on your risk level.")
 
@@ -242,7 +198,7 @@ else:
     - **Follow-Up**: Schedule annual check-ups with a healthcare provider.
     """)
 
-# 7. Expected Outcomes Section
+# 6. Expected Outcomes Section
 st.header("6. Expected Outcomes")
 st.write("The expected outcomes of your personalized care plan.")
 
@@ -270,7 +226,7 @@ else:
     - **Adjustments**: Continue with current routine; reevaluate annually.
     """)
 
-# 8. Quality Improvement Section
+# 7. Quality Improvement Section
 st.header("7. Quality Improvement Insights")
 st.write("Our system uses patient outcomes to refine and improve chronic care management.")
 
@@ -280,7 +236,7 @@ For patients showing stable or improved results, effective elements of their car
 This feedback loop is key to building an adaptive, evidence-based chronic care system that continually improves based on real-world patient data.
 """)
 
-# 9. AI Q&A Section
+# 8. AI Q&A Section
 st.header("8. AI Question and Answer")
 st.write("Ask a question related to your health, and our AI will provide evidence-based answers.")
 
