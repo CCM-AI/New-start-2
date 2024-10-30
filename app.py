@@ -13,10 +13,11 @@ def get_ai_response(question):
                 {"role": "user", "content": question}
             ]
         )
+        # Extracting the answer
         answer = response.choices[0].message['content']
         return answer, "Source: OpenAI"
     except Exception as e:
-        return "I'm sorry, but I cannot answer that question at the moment.", "N/A"
+        return f"I'm sorry, but I cannot answer that question at the moment. Error: {str(e)}", "N/A"
 
 # Streamlit UI
 st.title("Chronic Care Management System")
@@ -24,8 +25,9 @@ st.header("AI Question and Answer")
 st.write("Ask a question related to your health, and our AI will provide evidence-based answers.")
 
 user_question = st.text_input("Type your question here:")
+
 if st.button("Ask"):
-    if user_question:
+    if user_question.strip():  # Check for non-empty input
         answer, references = get_ai_response(user_question)
         st.write(f"**Answer**: {answer}")
         st.write(f"**References**: {references}")
