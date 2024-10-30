@@ -8,13 +8,28 @@ import numpy as np
 st.header("1. Patient Input Data")
 st.write("Please fill in your details to help us assess your chronic care needs.")
 
+# Patient Demographics
 age = st.number_input("Age", min_value=0, max_value=120, step=1)
 gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+
+# Cardiovascular Disease Risk Assessment
 blood_pressure = st.number_input("Blood Pressure (mm Hg)", min_value=0)
 cholesterol_level = st.number_input("Cholesterol Level (mg/dL)", min_value=0)
-diabetes = st.selectbox("Diabetes", ["Yes", "No"])
+heart_disease_family_history = st.selectbox("Family History of Heart Disease", ["Yes", "No"])
 smoking_status = st.selectbox("Smoking Status", ["Never", "Former", "Current"])
 physical_activity = st.selectbox("Physical Activity Level", ["Low", "Moderate", "High"])
+
+# Hypertension Risk Assessment
+hypertension_history = st.selectbox("History of Hypertension", ["Yes", "No"])
+hypertension_treatment = st.selectbox("Currently Under Treatment for Hypertension", ["Yes", "No"])
+
+# Diabetes Assessment
+diabetes = st.selectbox("Diabetes", ["Yes", "No"])
+diabetes_treatment = st.selectbox("Currently Under Treatment for Diabetes", ["Yes", "No"])
+
+# COPD and Asthma Assessment
+copd = st.selectbox("Chronic Obstructive Pulmonary Disease (COPD)", ["Yes", "No"])
+asthma = st.selectbox("Asthma", ["Yes", "No"])
 
 # Collect data in a dictionary for AI processing
 patient_data = {
@@ -22,9 +37,15 @@ patient_data = {
     "gender": gender,
     "blood_pressure": blood_pressure,
     "cholesterol_level": cholesterol_level,
-    "diabetes": diabetes,
+    "heart_disease_family_history": heart_disease_family_history,
     "smoking_status": smoking_status,
-    "physical_activity": physical_activity
+    "physical_activity": physical_activity,
+    "hypertension_history": hypertension_history,
+    "hypertension_treatment": hypertension_treatment,
+    "diabetes": diabetes,
+    "diabetes_treatment": diabetes_treatment,
+    "copd": copd,
+    "asthma": asthma,
 }
 
 # 2. AI-Driven Risk Stratification Section
@@ -32,14 +53,21 @@ st.header("2. AI-Driven Risk Stratification")
 st.write("Our AI will assess your risk level based on your input data.")
 
 # Simplified risk model based on input data
+risk_level = "Low Risk"
+risk_explanation = ""
+
 if blood_pressure > 140 or cholesterol_level > 240 or diabetes == "Yes":
     risk_level = "High Risk"
-elif age > 50 or smoking_status == "Current" or physical_activity == "Low":
+    risk_explanation = "You are at high risk due to poor control of blood pressure, cholesterol, or existing diabetes."
+elif age > 50 or smoking_status == "Current" or physical_activity == "Low" or hypertension_history == "Yes":
     risk_level = "Moderate Risk"
-else:
+    risk_explanation = "You are at moderate risk due to your age, smoking status, or a history of hypertension."
+elif age < 50 and smoking_status == "Never" and physical_activity == "High":
     risk_level = "Low Risk"
+    risk_explanation = "You have a low risk level based on your age, lifestyle, and absence of major risk factors."
 
 st.write(f"**Your Risk Level**: {risk_level}")
+st.write(f"**Explanation**: {risk_explanation}")
 
 # 3. Personalized Care Plans Section
 st.header("3. Personalized Care Plans")
@@ -48,25 +76,28 @@ st.write("Your customized care plan based on the AI-driven risk assessment.")
 if risk_level == "High Risk":
     st.write("""
     **High-Risk Care Plan**:
-    - **Diet**: Focus on heart-healthy foods and limit salt intake.
-    - **Exercise**: Aim for moderate exercise, like brisk walking, for 150 minutes per week.
-    - **Regular Monitoring**: Check blood pressure and cholesterol frequently.
-    - **Medication Adherence**: Follow up with your healthcare provider for medication adherence.
+    - **Diet**: Adopt a heart-healthy diet rich in fruits, vegetables, whole grains, and lean proteins. Limit saturated fats and sodium.
+    - **Exercise**: Engage in at least 150 minutes of moderate aerobic exercise each week. Include strength training twice weekly.
+    - **Regular Monitoring**: Check blood pressure and cholesterol levels monthly.
+    - **Medication Adherence**: Take prescribed medications consistently. Schedule regular reviews with your healthcare provider.
+    - **Mental Health**: Consider counseling or support groups for emotional support.
     """)
 elif risk_level == "Moderate Risk":
     st.write("""
     **Moderate-Risk Care Plan**:
-    - **Diet**: Adopt a balanced diet with a variety of foods.
-    - **Exercise**: Stay active, targeting 150 minutes per week of physical activity.
-    - **Monitoring**: Regularly check your blood pressure and cholesterol.
-    - **Preventive Measures**: Stay up-to-date with screenings and check-ups.
+    - **Diet**: Follow a balanced diet that includes a variety of nutrients. Monitor portion sizes and limit processed foods.
+    - **Exercise**: Aim for at least 150 minutes of moderate exercise weekly; incorporate strength training sessions.
+    - **Monitoring**: Check blood pressure and cholesterol every 6 months.
+    - **Preventive Measures**: Stay up-to-date with screenings and health checks.
+    - **Mental Health**: Maintain social connections and consider mindfulness practices.
     """)
 else:
     st.write("""
     **Low-Risk Care Plan**:
-    - **Diet**: Continue with a balanced diet to maintain current health.
-    - **Exercise**: Keep up with moderate physical activity.
-    - **Annual Monitoring**: Routine annual check-up to monitor key metrics.
+    - **Diet**: Continue a healthy, balanced diet. Focus on whole foods and hydration.
+    - **Exercise**: Maintain regular physical activity; aim for 150 minutes per week.
+    - **Annual Monitoring**: Routine annual check-up for blood pressure and cholesterol.
+    - **Preventive Screenings**: Keep up with preventive screenings based on age and gender.
     """)
 
 # 4. Self-Management Support Section
@@ -75,25 +106,54 @@ st.write("Resources and recommendations to help you manage your chronic conditio
 
 if risk_level == "High Risk":
     st.write("""
-    **High-Risk Self-Management Tips**:
-    - **Diet**: Follow a Mediterranean or DASH diet.
-    - **Exercise**: Include both cardio and strength exercises with your doctor's guidance.
-    - **Medication Management**: Use reminders or apps to adhere to medication.
-    - **Mental Health**: Consider regular check-ins with a counselor.
+    **High-Risk Self-Management Step-by-Step Guide**:
+    1. **Diet Management**:
+        - Plan meals weekly.
+        - Keep a food diary to track what you eat.
+        - Consult a nutritionist for personalized advice.
+    2. **Exercise Routine**:
+        - Start with 10-15 minutes of activity daily, gradually increasing.
+        - Join a local gym or group exercise class for motivation.
+    3. **Medication Management**:
+        - Use a pill organizer to track medications.
+        - Set reminders on your phone for medication times.
+    4. **Health Tracking**:
+        - Record daily blood pressure and weight.
+        - Use apps to log symptoms and medication adherence.
+    5. **Regular Check-Ins**:
+        - Schedule weekly check-ins with a healthcare provider or support group.
     """)
 elif risk_level == "Moderate Risk":
     st.write("""
-    **Moderate-Risk Self-Management Tips**:
-    - **Diet**: Maintain a diet rich in fruits, vegetables, and lean proteins.
-    - **Physical Activity**: Aim for 150 minutes of weekly exercise.
-    - **Routine Monitoring**: Track blood pressure and cholesterol as advised.
+    **Moderate-Risk Self-Management Step-by-Step Guide**:
+    1. **Diet Monitoring**:
+        - Use a food diary to observe dietary habits.
+        - Choose whole grains and limit sugar intake.
+    2. **Exercise Routine**:
+        - Set achievable fitness goals (e.g., walking 10,000 steps).
+        - Explore new activities like yoga or cycling.
+    3. **Routine Health Checks**:
+        - Check blood pressure once a week.
+        - Schedule bi-annual appointments with your healthcare provider.
+    4. **Track Health Metrics**:
+        - Use a mobile app to monitor blood pressure and cholesterol.
+        - Maintain a symptom log.
     """)
 else:
     st.write("""
-    **Low-Risk Self-Management Tips**:
-    - **Diet**: Continue with a balanced, portion-controlled diet.
-    - **Exercise**: Engage in regular activities like walking, biking, or swimming.
-    - **Preventive Screenings**: Maintain routine health screenings.
+    **Low-Risk Self-Management Step-by-Step Guide**:
+    1. **Diet Maintenance**:
+        - Continue with a balanced diet and hydrate well.
+        - Experiment with new recipes and healthy snacks.
+    2. **Physical Activity**:
+        - Set a goal for daily physical activity, making it fun.
+        - Include friends or family to stay motivated.
+    3. **Annual Health Check-Ups**:
+        - Schedule regular check-ups as recommended.
+        - Discuss any new symptoms with your healthcare provider.
+    4. **Preventive Care**:
+        - Keep a checklist for preventive screenings.
+        - Stay informed about your health status and changes.
     """)
 
 # 5. Monitoring & Follow-Up Section
@@ -103,23 +163,26 @@ st.write("Ongoing tracking and follow-up to ensure optimal care.")
 if risk_level == "High Risk":
     st.write("""
     **High-Risk Monitoring**:
-    - **Blood Pressure**: Check daily or as advised by your healthcare provider.
-    - **Cholesterol and Diabetes**: Test every 3-6 months.
-    - **Follow-Up**: Schedule check-ups every 3 months.
+    - **Blood Pressure**: Daily checks, aiming for less than 130/80 mm Hg.
+    - **Cholesterol**: Check every 3 months.
+    - **Weight**: Daily weighing to monitor fluctuations.
+    - **Follow-Up**: Schedule monthly appointments with your healthcare provider.
     """)
 elif risk_level == "Moderate Risk":
     st.write("""
     **Moderate-Risk Monitoring**:
-    - **Blood Pressure**: Check weekly.
-    - **Cholesterol**: Monitor every 6-12 months.
-    - **Follow-Up**: Schedule annual or bi-annual check-ups.
+    - **Blood Pressure**: Weekly checks, aiming for less than 140/90 mm Hg.
+    - **Cholesterol**: Check every 6 months.
+    - **Weight**: Weekly monitoring.
+    - **Follow-Up**: Schedule appointments every 6 months.
     """)
 else:
     st.write("""
     **Low-Risk Monitoring**:
-    - **Blood Pressure**: Monitor as advised, typically yearly.
-    - **Cholesterol**: Check yearly.
-    - **Follow-Up**: Routine annual check-ups.
+    - **Blood Pressure**: Check monthly, aiming for less than 140/90 mm Hg.
+    - **Cholesterol**: Annual check.
+    - **Weight**: Weekly check to maintain healthy weight.
+    - **Follow-Up**: Routine annual check-ups with your healthcare provider.
     """)
 
 # 6. Outcome Evaluation Section
@@ -139,18 +202,25 @@ except Exception as e:
 st.write(f"**Outcome Evaluation Based on {risk_level} Status**:")
 if risk_level == "High Risk":
     st.write("""
-    - **Expected Outcomes**: Reduced blood pressure and cholesterol, improved medication adherence.
-    - **Adjustments**: Modify medication or increase activity levels if no improvement.
+    - **Expected Outcomes**: 
+        - Reduced blood pressure and cholesterol within 3 months.
+        - Improved medication adherence.
+        - Better management of diabetes within 6 months.
+    - **Adjustments**: Regularly adjust care plan based on progress.
     """)
 elif risk_level == "Moderate Risk":
     st.write("""
-    - **Expected Outcomes**: Stability in health metrics.
-    - **Adjustments**: Small adjustments in diet or activity if results aren’t optimal.
+    - **Expected Outcomes**: 
+        - Stability in health metrics.
+        - Improvement in lifestyle habits within 3-6 months.
+    - **Adjustments**: Small modifications in diet or activity may be necessary based on outcomes.
     """)
 else:
     st.write("""
-    - **Expected Outcomes**: Maintenance of health metrics in a safe range.
-    - **Adjustments**: Continue current routine unless metrics change.
+    - **Expected Outcomes**: 
+        - Maintenance of health metrics within a safe range.
+        - Prevention of chronic disease onset.
+    - **Adjustments**: Continue with current routine; reevaluate annually.
     """)
 
 # 7. Quality Improvement Section
@@ -162,5 +232,28 @@ For patients classified as high-risk who show no improvement, the AI identifies 
 For patients showing stable or improved results, effective elements of their care plans are highlighted to improve outcomes for other patients.
 This feedback loop is key to building an adaptive, evidence-based chronic care system that continually improves based on real-world patient data.
 """)
+
+# 8. AI Q&A Section
+st.header("8. AI Question and Answer")
+st.write("Ask a question related to your health, and our AI will provide evidence-based answers.")
+
+user_question = st.text_input("Type your question here:")
+if st.button("Ask"):
+    # Placeholder for AI response; replace with actual AI implementation
+    if "diet" in user_question.lower():
+        answer = "A heart-healthy diet includes fruits, vegetables, whole grains, lean proteins, and healthy fats. It's essential to limit saturated fats and sodium."
+        references = "Source: American Heart Association"
+    elif "exercise" in user_question.lower():
+        answer = "Aim for at least 150 minutes of moderate exercise each week, including both aerobic and strength training."
+        references = "Source: Centers for Disease Control and Prevention"
+    elif "medication" in user_question.lower():
+        answer = "Always take medications as prescribed by your healthcare provider and consult them if you have any questions."
+        references = "Source: National Institutes of Health"
+    else:
+        answer = "I'm sorry, but I cannot answer that question at the moment."
+        references = "N/A"
+
+    st.write(f"**Answer**: {answer}")
+    st.write(f"**References**: {references}")
 
 st.write("Thank you for using our AI-driven chronic care management system to support better health outcomes!")
