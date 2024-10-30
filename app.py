@@ -1,15 +1,16 @@
 import streamlit as st
+import openai
 from datetime import datetime
-import openai  # Ensure you have the OpenAI package installed: pip install openai
 
-# Initialize OpenAI API Key
+# Initialize OpenAI API Key (replace this with environment variable for security in production)
 openai.api_key = "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"
+
 # Function to get AI response using OpenAI
 def get_ai_response(question):
     try:
         # Query the OpenAI API
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # You can change the model as per your need
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "user", "content": question}
             ]
@@ -18,6 +19,7 @@ def get_ai_response(question):
         answer = response.choices[0].message['content']
         return answer, "Source: OpenAI"
     except Exception as e:
+        st.write(f"An error occurred: {e}")
         return "I'm sorry, but I cannot answer that question at the moment.", "N/A"
 
 # 1. Patient Input Data Section
@@ -116,134 +118,15 @@ else:
     - **Preventive Screenings**: Keep up with preventive screenings based on age and gender.
     """)
 
-# 4. Self-Management Support Section
-st.header("4. Self-Management Support")
-st.write("Resources and recommendations to help you manage your chronic condition.")
-
-if risk_level == "High Risk":
-    st.write("""
-    **High-Risk Self-Management Step-by-Step Guide**:
-    1. **Diet Management**:
-        - Plan meals weekly.
-        - Keep a food diary to track what you eat.
-        - Consult a nutritionist for personalized advice.
-    2. **Exercise Routine**:
-        - Start with 10-15 minutes of activity daily, gradually increasing.
-        - Join a local gym or group exercise class for motivation.
-    3. **Medication Management**:
-        - Use a pill organizer to track medications.
-        - Set reminders on your phone for medication times.
-    4. **Health Tracking**:
-        - Record daily blood pressure and weight.
-        - Use apps to log symptoms and medication adherence.
-    5. **Regular Check-Ins**:
-        - Schedule weekly check-ins with a healthcare provider or support group.
-    """)
-elif risk_level == "Moderate Risk":
-    st.write("""
-    **Moderate-Risk Self-Management Step-by-Step Guide**:
-    1. **Nutrition**:
-        - Explore healthy recipes and meal prep options.
-        - Consider keeping a food journal for awareness.
-    2. **Physical Activity**:
-        - Set achievable weekly exercise goals.
-        - Incorporate walking or cycling into your daily routine.
-    3. **Monitoring Health**:
-        - Schedule regular blood pressure and cholesterol checks.
-        - Stay informed about your conditions through reliable sources.
-    4. **Support Network**:
-        - Join community support programs or online groups.
-        - Maintain open communication with your healthcare team.
-    """)
-else:
-    st.write("""
-    **Low-Risk Self-Management Step-by-Step Guide**:
-    1. **Healthy Eating**:
-        - Maintain a balanced diet and stay hydrated.
-        - Experiment with new healthy recipes.
-    2. **Physical Activity**:
-        - Engage in activities you enjoy (walking, cycling, swimming).
-        - Aim for regular, moderate activity.
-    3. **Routine Check-Ups**:
-        - Visit your healthcare provider annually for a check-up.
-    """)
-
-# 5. Monitoring & Follow-Up Section
-st.header("5. Monitoring & Follow-Up")
-st.write("Guidelines for monitoring your health based on your risk level.")
-
-if risk_level == "High Risk":
-    st.write("""
-    **High-Risk Monitoring**:
-    - **Blood Pressure**: Weekly checks.
-    - **Cholesterol**: Check every 6 months.
-    - **Weight**: Weekly weighing.
-    - **Follow-Up**: Schedule every 3 months with a healthcare provider.
-    """)
-elif risk_level == "Moderate Risk":
-    st.write("""
-    **Moderate-Risk Monitoring**:
-    - **Blood Pressure**: Weekly checks.
-    - **Cholesterol**: Check every 6 months.
-    - **Weight**: Weekly weighing.
-    - **Follow-Up**: Schedule every 3-6 months with a healthcare provider.
-    """)
-else:
-    st.write("""
-    **Low-Risk Monitoring**:
-    - **Blood Pressure**: Monthly checks.
-    - **Cholesterol**: Check annually.
-    - **Weight**: Monthly weighing.
-    - **Follow-Up**: Schedule annual check-ups with a healthcare provider.
-    """)
-
-# 6. Expected Outcomes Section
-st.header("6. Expected Outcomes")
-st.write("The expected outcomes of your personalized care plan.")
-
-st.write(f"**Expected Outcomes Based on {risk_level} Status**:")
-if risk_level == "High Risk":
-    st.write("""
-    - **Expected Outcomes**: 
-        - Reduced blood pressure and cholesterol levels within 3 months.
-        - Improved adherence to medications.
-        - Better management of diabetes within 6 months.
-    - **Adjustments**: Regularly adjust care plan based on progress.
-    """)
-elif risk_level == "Moderate Risk":
-    st.write("""
-    - **Expected Outcomes**: 
-        - Stability in health metrics.
-        - Improvement in lifestyle habits within 3-6 months.
-    - **Adjustments**: Small modifications in diet or activity may be necessary based on outcomes.
-    """)
-else:
-    st.write("""
-    - **Expected Outcomes**: 
-        - Maintenance of health metrics within a safe range.
-        - Prevention of chronic disease onset.
-    - **Adjustments**: Continue with current routine; reevaluate annually.
-    """)
-
-# 7. Quality Improvement Section
-st.header("7. Quality Improvement Insights")
-st.write("Our system uses patient outcomes to refine and improve chronic care management.")
-
-st.write("""
-For patients classified as high-risk who show no improvement, the AI identifies potential gaps in care strategies.
-For patients showing stable or improved results, effective elements of their care plans are highlighted to improve outcomes for other patients.
-This feedback loop is key to building an adaptive, evidence-based chronic care system that continually improves based on real-world patient data.
-""")
-
-# 8. AI Q&A Section
+# AI Q&A Section
 st.header("8. AI Question and Answer")
 st.write("Ask a question related to your health, and our AI will provide evidence-based answers.")
 
 user_question = st.text_input("Type your question here:")
 if st.button("Ask"):
-    answer, references = get_ai_response(user_question)
-    
-    st.write(f"**Answer**: {answer}")
-    st.write(f"**References**: {references}")
-
-st.write("Thank you for using our AI-driven chronic care management system to support better health outcomes!")
+    if user_question:  # Check if the input is not empty
+        answer, references = get_ai_response(user_question)
+        st.write(f"**Answer**: {answer}")
+        st.write(f"**References**: {references}")
+    else:
+        st.write("Please enter a question before clicking 'Ask'.")
