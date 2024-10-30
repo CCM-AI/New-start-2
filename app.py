@@ -1,17 +1,15 @@
-import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+import streamlit as st
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///patients.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Any other required imports
 
-db = SQLAlchemy(app)
+st.title("Chronic Care Management System")
 
-@app.route('/')
-def home():
-    return "Welcome to the Chronic Care Management System!"
+# Streamlit UI elements go here
+# For example:
+st.write("Welcome to the Chronic Care Management System!")
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # Use port from environment or default to 5000
-    app.run(host='0.0.0.0', port=port)
+# Add the remaining Streamlit-based logic for your app.
